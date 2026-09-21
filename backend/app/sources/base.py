@@ -21,5 +21,9 @@ class JobSource(ABC):
     name = "base"
 
     @abstractmethod
-    async def search(self, query: str, location: str = "") -> list[JobRecord]:
+    async def search(
+        self,
+        query: str,
+        location: str = ""
+    ) -> list[JobRecord]:
         raise NotImplementedError

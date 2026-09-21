@@ -1,28 +1,20 @@
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from .config import settings
-from .database import Base, engine
-from .api import router
+from .base import JobSource, JobRecord
 
-Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title=settings.app_name, version="0.1.0")
+class JobOpportunitiesSource(JobSource):
+    name = "jobopportunities"
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://localhost:3001",
-        "http://127.0.0.1:3000",
-        "http://127.0.0.1:3001",
-    ],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+    async def search(
+        self,
+        query: str,
+        location: str = ""
+    ) -> list[JobRecord]:
+        """
+        Job Opportunities source placeholder.
 
-app.include_router(router)
+        سيتم إضافة طريقة جلب البيانات الفعلية
+        لهذا المصدر بعد تحديد الـ API أو الصفحة
+        المسموح باستخدامها.
+        """
 
-@app.get("/")
-def root():
-    return {"message": "JobHunter AI API is running", "docs": "/docs"}
+        return []

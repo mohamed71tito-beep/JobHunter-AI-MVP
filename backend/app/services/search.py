@@ -2,7 +2,6 @@ from sqlalchemy import select, or_
 from sqlalchemy.orm import Session
 
 from ..models import Job
-
 from ..sources.adzuna import AdzunaSource
 from ..sources.jobopportunities import JobOpportunitiesSource
 
@@ -23,6 +22,7 @@ async def search_jobs(
         or_(
             Job.title.ilike(f"%{query}%"),
             Job.description.ilike(f"%{query}%"),
+            Job.company.ilike(f"%{query}%"),
         )
     )
 
@@ -36,7 +36,10 @@ async def search_jobs(
     if refresh or not existing:
         for source in sources:
             try:
-                records = await source.search(query, location)
+                records = await source.search(
+                    query,
+                    location
+                )
 
                 for record in records:
                     if not record.source_url:
@@ -49,7 +52,14 @@ async def search_jobs(
                     )
 
                     if not exists:
-                        db.add(Job(**record.__dict__))
+                        db.add(
+                            Job(**record.__dict__)
+                        )
+
+                print(
+                    f"Source '{source.name}' returned "
+                    f"{len(records)} jobs."
+                )
 
             except Exception as exc:
                 print(
