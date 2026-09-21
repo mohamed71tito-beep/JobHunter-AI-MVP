@@ -1,0 +1,14 @@
+CREATE TABLE IF NOT EXISTS jobs (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  company VARCHAR(255) NOT NULL,
+  description TEXT DEFAULT '',
+  location VARCHAR(255) DEFAULT '',
+  work_type VARCHAR(100) DEFAULT '',
+  experience_level VARCHAR(100) DEFAULT '',
+  salary VARCHAR(255) DEFAULT '',
+  source VARCHAR(100) NOT NULL,
+  source_url VARCHAR(1000) UNIQUE NOT NULL,
+  published_at TIMESTAMP NULL,
+  collected_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
